@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'media', // Automatically uses the user's system preference (Light/Dark)
+            darkMode: 'class', // Changed to 'class' to allow manual toggling while defaulting to system
             theme: {
                 extend: {
                     fontFamily: {
@@ -17,13 +17,90 @@
             }
         }
     </script>
+    
+    <!-- This script runs immediately to prevent a flash of unstyled content (FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+
     <style>
+        /* Material 3 "Sunset" Smooth Color Transitions */
+        *, *::before, *::after {
+            transition-property: background-color, border-color, color, fill, stroke;
+            transition-duration: 600ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         /* Smooth scrolling for anchor links */
         html { scroll-behavior: smooth; }
         
         /* Material You fluid transition utilities */
         .material-transition {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Specialized Material 3 / Glass transition for the buttons */
+        .glass-btn-transition {
+            transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        /* Material 3 Edge Fade Masks */
+        .mask-edge-right {
+            -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent);
+            mask-image: linear-gradient(to right, black calc(100% - 32px), transparent);
+        }
+        .mask-edge-left {
+            -webkit-mask-image: linear-gradient(to right, transparent, black 32px);
+            mask-image: linear-gradient(to right, transparent, black 32px);
+        }
+        .mask-edge-both {
+            -webkit-mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+            mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+        }
+        .mask-edge-none {
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+
+        /* Animated Theme Toggle Button (Classic variant from Toggles.dev) */
+        .theme-toggle-clip-path {
+            transition: d 400ms cubic-bezier(0.4, 0, 0.2, 1), transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            d: path('M0 0h25a1 1 0 0010 10v14H0Z');
+        }
+        html.dark .theme-toggle-clip-path {
+            transition-delay: 60ms; /* Delay animation to sync with rays */
+            d: path('M0 2h13a1 1 0 0010 10v14H0Z');
+        }
+        @supports not (d: path('M0 0')) {
+            /* Fallback for Safari/Older browsers that don't support animating 'd' path properties */
+            html.dark .theme-toggle-clip-path {
+                transform: translate(-3.25px, 0.5px);
+            }
+        }
+
+        .theme-toggle-circle {
+            transform-origin: center;
+            transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        html.dark .theme-toggle-circle {
+            transform: scale(1.7);
+        }
+
+        .theme-toggle-ray {
+            transform-box: view-box;
+            transform-origin: center;
+            transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 60ms; /* Delay showing rays when entering light mode */
+        }
+        html.dark .theme-toggle-ray {
+            transform: scale(0);
+            opacity: 0;
+            transition-delay: 0s;
         }
 
         /* Hide scrollbar for horizontal scrolling */
@@ -50,12 +127,61 @@
     <!-- Navigation -->
     <nav class="max-w-4xl mx-auto bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full shadow-sm py-4 px-8 flex justify-between items-center sticky top-4 z-50 material-transition">
         <a href="#" class="font-bold text-emerald-800 dark:text-emerald-400 text-lg hover:opacity-80 transition">A. Alexander Priest</a>
-        <div class="space-x-6 text-sm hidden md:block" id="nav-menu">
-            <a href="#about" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">About</a>
-            <a href="#research" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">Research</a>
-            <a href="#teaching" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">Teaching</a>
-            <a href="#cv" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">CV & Contact</a>
+        
+        <div class="flex items-center gap-6">
+            <div class="space-x-6 text-sm hidden md:block" id="nav-menu">
+                <a href="#about" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">About</a>
+                <a href="#research" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">Research</a>
+                <a href="#teaching" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">Teaching</a>
+                <a href="#cv" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">CV & Contact</a>
+            </div>
+
+            <!-- Theme Toggle Button (Desktop & Mobile) -->
+            <button type="button" class="theme-toggle-btn text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-200 dark:focus-visible:ring-slate-700 rounded-full text-sm p-2.5 material-transition shrink-0" aria-label="Toggle dark mode">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+                    <defs>
+                        <clipPath id="toggles-dev-clip-desktop">
+                            <path class="theme-toggle-clip-path" d="M0 0h25a1 1 0 0010 10v14H0Z" />
+                        </clipPath>
+                    </defs>
+                    <g stroke="currentColor" stroke-linecap="round">
+                        <circle cx="12" cy="12" r="5" fill="currentColor" clip-path="url(#toggles-dev-clip-desktop)" class="theme-toggle-circle" />
+                        <path d="M12 1.4v2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="m20.3 3.7-2.5 2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="M22.6 12h-2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="M12 22.6v-2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="M1.4 12h2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="m20.3 20.3-2.5-2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="m3.7 20.3 2.5-2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                        <path d="m3.7 3.7 2.5 2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    </g>
+                </svg>
+            </button>
         </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation (Material 3 Style) -->
+    <nav class="fixed bottom-4 left-4 right-4 z-50 md:hidden bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] py-2 px-2 flex justify-around items-center material-transition">
+        <!-- About -->
+        <a href="#about" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-500 dark:text-slate-400 material-transition">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="text-[10px] font-semibold tracking-wide">About</span>
+        </a>
+        <!-- Research -->
+        <a href="#research" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-500 dark:text-slate-400 material-transition">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="text-[10px] font-semibold tracking-wide">Research</span>
+        </a>
+        <!-- Teaching -->
+        <a href="#teaching" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-500 dark:text-slate-400 material-transition">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            <span class="text-[10px] font-semibold tracking-wide">Teaching</span>
+        </a>
+        <!-- CV -->
+        <a href="#cv" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-500 dark:text-slate-400 material-transition">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span class="text-[10px] font-semibold tracking-wide">Contact</span>
+        </a>
     </nav>
 
     <main class="max-w-4xl mx-auto mt-16 space-y-24">
@@ -119,135 +245,149 @@
                 <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </div>
             
-            <!-- Updated: Horizontal Scroll Container -->
-            <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 pt-4 no-scrollbar items-stretch" id="research-grid">
+            <!-- Research Carousel Wrapper for Buttons -->
+            <div class="relative group/carousel">
                 
-                <!-- Card 1: Forthcoming -->
-                <div data-category="forthcoming" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                        <div class="w-full h-full bg-indigo-100/50 dark:bg-indigo-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-indigo-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2V15"></path></svg>
+                <!-- Left Scroll Button (Apple Glass & Material 3 Inspired) -->
+                <button id="scroll-left-btn" class="absolute left-2 md:-left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center bg-white/20 dark:bg-slate-800/30 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 shadow-[0_4px_24px_rgba(0,0,0,0.1)] text-slate-700 dark:text-slate-200 z-10 glass-btn-transition opacity-0 scale-75 pointer-events-none hover:bg-white/40 dark:hover:bg-slate-700/50 hover:scale-110 active:scale-95" aria-label="Scroll left">
+                    <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+
+                <!-- Horizontal Scroll Container -->
+                <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 pt-4 px-4 md:px-8 scroll-px-4 md:scroll-px-8 no-scrollbar items-stretch relative z-0 mask-edge-right transition-all duration-300" id="research-grid">
+                    
+                    <!-- Card 1: Forthcoming -->
+                    <div data-category="forthcoming" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                            <div class="w-full h-full bg-indigo-100/50 dark:bg-indigo-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-indigo-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2V15"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider rounded-full">Forthcoming • Summer 2026</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Managed Retreat</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">The Revolving Door of Risk: Climate Hazards, Risk Containment and the Hidden Social Dynamics of Managed Retreat</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Forthcoming in RSF: Russell Sage Foundation Journal of Social Sciences. Co-authored with James R. Elliott, Kevin Loughran, and Phylicia Lee Brown, this study investigates the social dynamics of managed retreat and the "revolving door" of climate risk.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">View Project Details &rarr;</a>
                         </div>
                     </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider rounded-full">Forthcoming • Summer 2026</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Managed Retreat</span>
+
+                    <!-- Card 2: In Progress - Blowin in the Wind -->
+                    <div data-category="in-progress" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                            <div class="w-full h-full bg-cyan-100/50 dark:bg-cyan-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-cyan-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">The Revolving Door of Risk: Climate Hazards, Risk Containment and the Hidden Social Dynamics of Managed Retreat</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Forthcoming in RSF: Russell Sage Foundation Journal of Social Sciences. Co-authored with James R. Elliott, Kevin Loughran, and Phylicia Lee Brown, this study investigates the social dynamics of managed retreat and the "revolving door" of climate risk.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">View Project Details &rarr;</a>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider rounded-full">In Progress</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Residential Instability</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Blowin' in the Wind: Disaggregating Patterns of Residential Relocation Following Four Major Hurricanes</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Prepared for the 2026 Population Association of America meeting. This solo-authored paper leverages restricted consumer reference data to track the address-to-address relocation of nearly four million households impacted by major hurricanes.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">View Project Details &rarr;</a>
+                        </div>
                     </div>
+
+                    <!-- Card 3: In Progress - Colorblind Retreat -->
+                    <div data-category="in-progress" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                            <div class="w-full h-full bg-orange-100/50 dark:bg-orange-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-orange-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider rounded-full">In Progress</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Qualitative Study</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">How People (Don't) Talk about Race in Climate Relocation</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Co-authored with Kevin Loughran, James R. Elliott, and others, this nationwide qualitative study investigates how government buyout programs intersect with racialized landscapes and ideologies of colorblindness.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">View Project Details &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Published 2026 -->
+                    <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                             <div class="w-full h-full bg-rose-100/50 dark:bg-rose-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-rose-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2026</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Natech Disasters</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Toxic Fear: Climate, Contamination, and Worries about Future Flooding in Coastal Industrial Communities</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Natural Hazards Review. Co-authored with James R. Elliott, Phylicia Lee Brown, and Stephen J. Brown, this study investigates racial and ethnic disparities in reports of contamination during Hurricane Harvey and its influence on future flooding worries.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Published 2025 -->
+                    <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                            <div class="w-full h-full bg-blue-100/50 dark:bg-blue-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-blue-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2025</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Climate Adaptation</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Here, There and Everywhere: Residential Relocation Following a Natural Disaster</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Spatial Demography. Using granular consumer reference data, this solo-authored paper examines how the severity of flooding interacts with climate apartheid to shape post-disaster residential relocation.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Published 2023 -->
+                    <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                             <div class="w-full h-full bg-emerald-100/50 dark:bg-emerald-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-emerald-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2023</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Environmental Justice</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">The Multiplicity of Impact: How Social Marginalization Compounds Climate Disasters</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Environmental Sociology. Co-authored with James R. Elliott, this article reveals how racial marginalization leads to a greater number and wider range of disaster impacts for households of color and their networks.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 7: Published 2023 -->
+                    <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
+                             <div class="w-full h-full bg-purple-100/50 dark:bg-purple-900/20 flex items-center justify-center material-transition group-hover:scale-105">
+                                 <svg class="w-14 h-14 text-purple-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2023</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Social Capital</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Under Pressure: Social Capital and Trust in Government After Natural Disasters</h3>
+                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Social Currents. This solo-authored article explores how an impact to households' close-tie networks acts as a form of collective trauma, significantly reducing trust in government after natural disasters.</p>
+                            <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- Card 2: In Progress - Blowin in the Wind -->
-                <div data-category="in-progress" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                        <div class="w-full h-full bg-cyan-100/50 dark:bg-cyan-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-cyan-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider rounded-full">In Progress</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Residential Instability</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Blowin' in the Wind: Disaggregating Patterns of Residential Relocation Following Four Major Hurricanes</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Prepared for the 2026 Population Association of America meeting. This solo-authored paper leverages restricted consumer reference data to track the address-to-address relocation of nearly four million households impacted by major hurricanes.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">View Project Details &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Card 3: In Progress - Colorblind Retreat -->
-                <div data-category="in-progress" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                        <div class="w-full h-full bg-orange-100/50 dark:bg-orange-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-orange-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider rounded-full">In Progress</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Qualitative Study</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">How People (Don't) Talk about Race in Climate Relocation</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Co-authored with Kevin Loughran, James R. Elliott, and others, this nationwide qualitative study investigates how government buyout programs intersect with racialized landscapes and ideologies of colorblindness.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">View Project Details &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Card 4: Published 2026 -->
-                <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                         <div class="w-full h-full bg-rose-100/50 dark:bg-rose-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-rose-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2026</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Natech Disasters</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Toxic Fear: Climate, Contamination, and Worries about Future Flooding in Coastal Industrial Communities</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Natural Hazards Review. Co-authored with James R. Elliott, Phylicia Lee Brown, and Stephen J. Brown, this study investigates racial and ethnic disparities in reports of contamination during Hurricane Harvey and its influence on future flooding worries.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Card 5: Published 2025 -->
-                <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                        <div class="w-full h-full bg-blue-100/50 dark:bg-blue-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-blue-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2025</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Climate Adaptation</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Here, There and Everywhere: Residential Relocation Following a Natural Disaster</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Spatial Demography. Using granular consumer reference data, this solo-authored paper examines how the severity of flooding interacts with climate apartheid to shape post-disaster residential relocation.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Card 6: Published 2023 -->
-                <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                         <div class="w-full h-full bg-emerald-100/50 dark:bg-emerald-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-emerald-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2023</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Environmental Justice</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">The Multiplicity of Impact: How Social Marginalization Compounds Climate Disasters</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Environmental Sociology. Co-authored with James R. Elliott, this article reveals how racial marginalization leads to a greater number and wider range of disaster impacts for households of color and their networks.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Card 7: Published 2023 -->
-                <div data-category="published" class="research-card shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] snap-center bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                    <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                         <div class="w-full h-full bg-purple-100/50 dark:bg-purple-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                             <svg class="w-14 h-14 text-purple-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-8 space-y-4 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2023</span>
-                            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Social Capital</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Under Pressure: Social Capital and Trust in Government After Natural Disasters</h3>
-                        <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Social Currents. This solo-authored article explores how an impact to households' close-tie networks acts as a form of collective trauma, significantly reducing trust in government after natural disasters.</p>
-                        <a href="#" class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">Read the Article &rarr;</a>
-                    </div>
-                </div>
-
+                <!-- Right Scroll Button (Apple Glass & Material 3 Inspired) -->
+                <button id="scroll-right-btn" class="absolute right-2 md:-right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center bg-white/20 dark:bg-slate-800/30 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 shadow-[0_4px_24px_rgba(0,0,0,0.1)] text-slate-700 dark:text-slate-200 z-10 glass-btn-transition opacity-0 scale-75 pointer-events-none hover:bg-white/40 dark:hover:bg-slate-700/50 hover:scale-110 active:scale-95" aria-label="Scroll right">
+                    <svg class="w-6 h-6 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
         </section>
 
@@ -364,7 +504,7 @@
         </section>
 
         <!-- Academic Footer -->
-        <footer class="pb-12 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-500 dark:text-slate-400">
+        <footer class="pb-24 md:pb-12 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-500 dark:text-slate-400">
             <p class="text-sm">© 2026 A. Alexander Priest. All rights reserved.</p>
             
             <div class="flex items-center gap-6">
@@ -387,6 +527,72 @@
 
     <!-- Interactive Scripts -->
     <script>
+        // --- Custom Carousel Buttons Logic ---
+        const carousel = document.getElementById('research-grid');
+        const leftBtn = document.getElementById('scroll-left-btn');
+        const rightBtn = document.getElementById('scroll-right-btn');
+
+        // Function to handle showing/hiding buttons based on scroll position
+        function updateScrollButtons() {
+            // Wait for next frame to ensure elements are painted (useful for dynamic filtering)
+            requestAnimationFrame(() => {
+                const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+
+                // Check Left Button
+                if (carousel.scrollLeft <= 10) {
+                    leftBtn.classList.add('opacity-0', 'scale-75', 'pointer-events-none');
+                    leftBtn.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+                } else {
+                    leftBtn.classList.remove('opacity-0', 'scale-75', 'pointer-events-none');
+                    leftBtn.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+                }
+
+                // Check Right Button (hide if reached end OR if there's no overflow)
+                if (carousel.scrollLeft >= maxScrollLeft - 10 || maxScrollLeft <= 0) {
+                    rightBtn.classList.add('opacity-0', 'scale-75', 'pointer-events-none');
+                    rightBtn.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+                } else {
+                    rightBtn.classList.remove('opacity-0', 'scale-75', 'pointer-events-none');
+                    rightBtn.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+                }
+
+                // Dynamic Mask Logic to apply fade-out effect to carousel edges
+                carousel.classList.remove('mask-edge-none', 'mask-edge-left', 'mask-edge-right', 'mask-edge-both');
+                
+                if (maxScrollLeft <= 0) {
+                    carousel.classList.add('mask-edge-none');
+                } else if (carousel.scrollLeft <= 10) {
+                    carousel.classList.add('mask-edge-right');
+                } else if (carousel.scrollLeft >= maxScrollLeft - 10) {
+                    carousel.classList.add('mask-edge-left');
+                } else {
+                    carousel.classList.add('mask-edge-both');
+                }
+            });
+        }
+
+        // Attach click events
+        leftBtn.addEventListener('click', () => {
+            // Scroll exactly one card width + the gap
+            const cardWidth = carousel.querySelector('.research-card').offsetWidth;
+            const gap = 24; // Tailwind gap-6 equals 24px
+            carousel.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+        });
+
+        rightBtn.addEventListener('click', () => {
+            const cardWidth = carousel.querySelector('.research-card').offsetWidth;
+            const gap = 24;
+            carousel.scrollBy({ left: (cardWidth + gap), behavior: 'smooth' });
+        });
+
+        // Event listeners for responsive visibility
+        carousel.addEventListener('scroll', updateScrollButtons, { passive: true });
+        window.addEventListener('resize', updateScrollButtons);
+        
+        // Initial visibility check
+        updateScrollButtons();
+        // ------------------------------------
+
         // Research Category Filtering
         function filterResearch(category) {
             const cards = document.querySelectorAll('.research-card');
@@ -409,12 +615,19 @@
                     card.style.opacity = '0';
                 }
             });
+
+            // Reset scroll position and recalculate buttons after filtering
+            setTimeout(() => {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                updateScrollButtons();
+            }, 60);
         }
 
         // Active Scroll Navigation (Scrollspy)
         document.addEventListener("DOMContentLoaded", () => {
             const sections = document.querySelectorAll("section[id]");
             const navLinks = document.querySelectorAll(".nav-link");
+            const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
 
             const observerOptions = {
                 root: null,
@@ -427,6 +640,7 @@
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute("id");
                         
+                        // Update Desktop Links
                         navLinks.forEach(link => {
                             // Reset all links
                             link.classList.remove("text-emerald-700", "dark:text-emerald-400", "font-bold");
@@ -438,12 +652,53 @@
                                 link.classList.add("text-emerald-700", "dark:text-emerald-400", "font-bold");
                             }
                         });
+
+                        // Update Mobile Links (M3 active pill styling)
+                        mobileNavLinks.forEach(link => {
+                            // Reset mobile links
+                            link.classList.remove("text-emerald-800", "dark:text-emerald-300", "bg-emerald-100/60", "dark:bg-emerald-800/40");
+                            link.classList.add("text-slate-500", "dark:text-slate-400");
+                            
+                            // Highlight active mobile link
+                            if (link.getAttribute("href") === `#${id}`) {
+                                link.classList.remove("text-slate-500", "dark:text-slate-400");
+                                link.classList.add("text-emerald-800", "dark:text-emerald-300", "bg-emerald-100/60", "dark:bg-emerald-800/40");
+                            }
+                        });
                     }
                 });
             }, observerOptions);
 
             sections.forEach(section => {
                 observer.observe(section);
+            });
+        });
+
+        // --- Light/Dark Mode Toggle Logic ---
+        const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');
+
+        // Listen for toggle button clicks (Updates logic to handle both Desktop and Mobile buttons)
+        themeToggleBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // If a preference was previously set in local storage
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    // If no preference is set, default to swapping whatever the system is
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
             });
         });
     </script>
