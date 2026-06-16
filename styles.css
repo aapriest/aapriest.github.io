@@ -1,0 +1,92 @@
+/* Material 3 "Sunset" Smooth Color Transitions */
+*, *::before, *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 600ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth scrolling for anchor links */
+html { scroll-behavior: smooth; }
+
+/* Material You fluid transition utilities */
+.material-transition {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Specialized Material 3 / Glass transition for the buttons */
+.glass-btn-transition {
+    transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Material 3 Edge Fade Masks */
+.mask-edge-right {
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, black calc(100% - 32px), transparent);
+}
+.mask-edge-left {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 32px);
+    mask-image: linear-gradient(to right, transparent, black 32px);
+}
+.mask-edge-both {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+}
+.mask-edge-none {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+/* Animated Theme Toggle Button (Classic variant from Toggles.dev) */
+.theme-toggle-clip-path {
+    transition: d 400ms cubic-bezier(0.4, 0, 0.2, 1), transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    d: path('M0 0h25a1 1 0 0010 10v14H0Z');
+}
+html.dark .theme-toggle-clip-path {
+    transition-delay: 60ms; /* Delay animation to sync with rays */
+    d: path('M0 2h13a1 1 0 0010 10v14H0Z');
+}
+@supports not (d: path('M0 0')) {
+    /* Fallback for Safari/Older browsers that don't support animating 'd' path properties */
+    html.dark .theme-toggle-clip-path {
+        transform: translate(-3.25px, 0.5px);
+    }
+}
+
+.theme-toggle-circle {
+    transform-origin: center;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+html.dark .theme-toggle-circle {
+    transform: scale(1.7);
+}
+
+.theme-toggle-ray {
+    transform-box: view-box;
+    transform-origin: center;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 60ms; /* Delay showing rays when entering light mode */
+}
+html.dark .theme-toggle-ray {
+    transform: scale(0);
+    opacity: 0;
+    transition-delay: 0s;
+}
+
+/* Hide scrollbar for horizontal scrolling */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Subtle horizontal bounce for scroll prompt */
+@keyframes bounce-x {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+}
+.animate-bounce-x {
+    animation: bounce-x 2s ease-in-out infinite;
+}
