@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A. Alexander Priest | Environmental Sociologist</title>
+    <!-- Google Fonts: Montserrat (for headings/UI) and Lora (for academic body copy) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class', // Changed to 'class' to allow manual toggling while defaulting to system
             theme: {
                 extend: {
+                    screens: {
+                        'xs': '375px',
+                    },
                     fontFamily: {
-                        sans: ['system-ui', '-apple-system', 'sans-serif'],
+                        sans: ['Montserrat', 'system-ui', '-apple-system', 'sans-serif'],
+                        serif: ['Lora', 'Georgia', 'serif'],
                     }
                 }
             }
@@ -28,23 +36,59 @@
     </script>
 
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Material Web Components bundle from ESM CDN -->
+    <script type="module" src="https://esm.sh/@material/web@1.5.0/all.js"></script>
+    <!-- Google Material Symbols Font for M3 Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
-<body class="bg-[#f0f4f1] dark:bg-slate-900 text-slate-800 dark:text-slate-200 p-4 md:p-8 material-transition">
+<body class="bg-[#f0f4f1] dark:bg-slate-900 text-slate-800 dark:text-slate-200 p-4 md:p-8">
+
+    <!-- Mobile Top App Bar (Material 3 Style - Floating) -->
+    <header class="fixed top-4 left-4 right-4 z-50 md:hidden bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/30 dark:border-slate-800/30 py-2.5 px-6 rounded-full flex justify-between items-center transition-all duration-300">
+        <md-elevation></md-elevation>
+        <a href="#hero" class="home-link font-bold text-emerald-800 dark:text-emerald-400 text-base">A. Alexander Priest</a>
+        
+        <!-- Theme Toggle Button (Mobile) -->
+        <button type="button" class="theme-toggle-btn relative text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none rounded-full p-2 material-transition" aria-label="Toggle dark mode">
+            <md-focus-ring></md-focus-ring>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+                <defs>
+                    <clipPath id="toggles-dev-clip-mobile">
+                        <path class="theme-toggle-clip-path" d="M0 0h25a1 1 0 0010 10v14H0Z" />
+                    </clipPath>
+                </defs>
+                <g stroke="currentColor" stroke-linecap="round">
+                    <circle cx="12" cy="12" r="5" fill="currentColor" clip-path="url(#toggles-dev-clip-mobile)" class="theme-toggle-circle" />
+                    <path d="M12 1.4v2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="m20.3 3.7-2.5 2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="M22.6 12h-2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="M12 22.6v-2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="M1.4 12h2.4" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="m20.3 20.3-2.5-2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="m3.7 20.3 2.5-2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                    <path d="m3.7 3.7 2.5 2.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="0" paint-order="stroke markers fill" class="theme-toggle-ray" />
+                </g>
+            </svg>
+        </button>
+    </header>
 
     <!-- Navigation (Hidden on Mobile) -->
-    <nav class="max-w-4xl mx-auto bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full shadow-sm py-4 px-8 hidden md:flex justify-between items-center sticky top-4 z-50 material-transition">
+    <nav class="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-4xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white/40 dark:border-slate-700/50 rounded-full py-4 px-8 hidden md:flex justify-between items-center z-50 material-transition shadow-sm">
+        <md-elevation></md-elevation>
         <a href="#hero" class="home-link font-bold text-emerald-800 dark:text-emerald-400 text-lg hover:opacity-80 transition">A. Alexander Priest</a>
         
         <div class="flex items-center gap-6">
-            <div class="space-x-6 text-sm hidden md:block" id="nav-menu">
-                <a href="#about" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">About</a>
-                <a href="#research" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">Research</a>
-                <a href="#teaching" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">Teaching</a>
-                <a href="#cv" class="nav-link text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium material-transition">CV & Contact</a>
+            <div class="relative flex items-center gap-1 text-sm hidden md:flex" id="nav-menu">
+                <div class="nav-indicator absolute bg-emerald-100/60 dark:bg-emerald-800/40 rounded-full -z-10" id="nav-indicator" style="left: 0; width: 0; height: 0; top: 0; opacity: 0;"></div>
+                <a href="#about" class="nav-link relative overflow-hidden z-10 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium material-transition">About<md-ripple></md-ripple><md-focus-ring></md-focus-ring></a>
+                <a href="#research" class="nav-link relative overflow-hidden z-10 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium material-transition">Research<md-ripple></md-ripple><md-focus-ring></md-focus-ring></a>
+                <a href="#teaching" class="nav-link relative overflow-hidden z-10 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium material-transition">Teaching<md-ripple></md-ripple><md-focus-ring></md-focus-ring></a>
+                <a href="#cv" class="nav-link relative overflow-hidden z-10 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium material-transition">CV & Contact<md-ripple></md-ripple><md-focus-ring></md-focus-ring></a>
             </div>
 
             <!-- Theme Toggle Button (Desktop) -->
-            <button type="button" class="theme-toggle-btn text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-200 dark:focus-visible:ring-slate-700 rounded-full text-sm p-2.5 material-transition shrink-0" aria-label="Toggle dark mode">
+            <button type="button" class="theme-toggle-btn relative text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-750 focus:outline-none rounded-full text-sm p-2.5 material-transition shrink-0" aria-label="Toggle dark mode">
+                <md-focus-ring></md-focus-ring>
                 <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
                     <defs>
                         <clipPath id="toggles-dev-clip-desktop">
@@ -68,38 +112,58 @@
     </nav>
 
     <!-- Mobile Bottom Navigation (Material 3 Style) -->
-    <nav class="fixed bottom-4 left-4 right-4 z-50 md:hidden bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] py-2 px-2 flex justify-around items-center material-transition">
+    <nav class="fixed bottom-4 left-4 right-4 z-50 md:hidden bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 rounded-3xl py-2 px-3 flex justify-around items-center transition-all duration-300">
+        <md-elevation></md-elevation>
+        <!-- Sliding active indicator capsule -->
+        <div class="mobile-nav-indicator absolute bg-emerald-100/80 dark:bg-emerald-800/40 rounded-full -z-10" id="mobile-nav-indicator" style="left: 0; width: 0; height: 0; top: 0; opacity: 0;"></div>
+        
         <!-- Home -->
-        <a href="#hero" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-600 dark:text-slate-300 material-transition">
-            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            <span class="text-[10px] font-semibold tracking-wide">Home</span>
+        <a href="#hero" class="mobile-nav-link relative overflow-hidden flex flex-col items-center justify-center w-[4.5rem] text-slate-700 dark:text-slate-300 no-underline transition-colors duration-300">
+            <div class="mobile-nav-icon-container w-14 h-8 relative overflow-hidden flex items-center justify-center rounded-full transition-all duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <md-ripple></md-ripple>
+            </div>
+            <span class="text-[10px] font-semibold tracking-wide mt-1">Home</span>
+            <md-focus-ring></md-focus-ring>
         </a>
         <!-- Research -->
-        <a href="#research" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-600 dark:text-slate-300 material-transition">
-            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <span class="text-[10px] font-semibold tracking-wide">Research</span>
+        <a href="#research" class="mobile-nav-link relative overflow-hidden flex flex-col items-center justify-center w-[4.5rem] text-slate-700 dark:text-slate-300 no-underline transition-colors duration-300">
+            <div class="mobile-nav-icon-container w-14 h-8 relative overflow-hidden flex items-center justify-center rounded-full transition-all duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <md-ripple></md-ripple>
+            </div>
+            <span class="text-[10px] font-semibold tracking-wide mt-1">Research</span>
+            <md-focus-ring></md-focus-ring>
         </a>
         <!-- Teaching -->
-        <a href="#teaching" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-600 dark:text-slate-300 material-transition">
-            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
-            <span class="text-[10px] font-semibold tracking-wide">Teaching</span>
+        <a href="#teaching" class="mobile-nav-link relative overflow-hidden flex flex-col items-center justify-center w-[4.5rem] text-slate-700 dark:text-slate-300 no-underline transition-colors duration-300">
+            <div class="mobile-nav-icon-container w-14 h-8 relative overflow-hidden flex items-center justify-center rounded-full transition-all duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <md-ripple></md-ripple>
+            </div>
+            <span class="text-[10px] font-semibold tracking-wide mt-1">Teaching</span>
+            <md-focus-ring></md-focus-ring>
         </a>
         <!-- Contact -->
-        <a href="#cv" class="mobile-nav-link flex flex-col items-center justify-center w-[4.5rem] h-14 rounded-2xl text-slate-600 dark:text-slate-300 material-transition">
-            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            <span class="text-[10px] font-semibold tracking-wide">Contact</span>
+        <a href="#cv" class="mobile-nav-link relative overflow-hidden flex flex-col items-center justify-center w-[4.5rem] text-slate-700 dark:text-slate-300 no-underline transition-colors duration-300">
+            <div class="mobile-nav-icon-container w-14 h-8 relative overflow-hidden flex items-center justify-center rounded-full transition-all duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <md-ripple></md-ripple>
+            </div>
+            <span class="text-[10px] font-semibold tracking-wide mt-1">Contact</span>
+            <md-focus-ring></md-focus-ring>
         </a>
     </nav>
 
@@ -107,35 +171,37 @@
     <main id="main-view" class="max-w-4xl mx-auto mt-16 space-y-24 transition-opacity duration-300 opacity-100 origin-top">
         
         <!-- Hero Section -->
-        <section id="hero" class="flex flex-col-reverse md:flex-row items-center gap-12 pt-8">
+        <section id="hero" class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12 pt-12 md:pt-8">
             <div class="flex-1 space-y-6">
                 <!-- Material Chip -->
                 <div class="inline-block px-4 py-2 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 rounded-full text-sm font-semibold tracking-wide shadow-sm">
                     Environmental Sociologist
                 </div>
-                <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight">
                     Exploring relocation <br>as adaptation.
                 </h1>
-                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-lg">
+                <p class="text-lg text-slate-700 dark:text-slate-300 max-w-lg font-serif">
                     I pair insights from environmental and urban scholarship with methods of causal inference to investigate the social production and consequences of environmental injustices. My work focuses on how communities experience climate hazards, navigate recovery, and utilize residential relocation as a form of adaptation.
                 </p>
                 <div class="pt-4 flex gap-4">
-                    <a href="#research" class="inline-block px-8 py-4 bg-emerald-700 dark:bg-emerald-600 text-white rounded-full font-medium hover:bg-emerald-800 dark:hover:bg-emerald-500 material-transition shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    <a href="#research" class="inline-block relative overflow-hidden px-8 py-4 bg-emerald-800 dark:bg-emerald-700 text-white rounded-full font-medium hover:bg-emerald-900 dark:hover:bg-emerald-800 material-transition shadow-lg hover:shadow-xl hover:-translate-y-1">
                         Explore My Work
+                        <md-ripple></md-ripple>
+                        <md-focus-ring></md-focus-ring>
                     </a>
                 </div>
             </div>
             
             <!-- Profile Image with Hover State -->
-            <div class="w-64 h-64 md:w-80 md:h-80 bg-emerald-200 dark:bg-emerald-800 rounded-[3rem] shadow-inner flex items-center justify-center overflow-hidden shrink-0 material-transition hover:scale-[1.03] hover:shadow-xl cursor-pointer">
+            <div class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 bg-emerald-200 dark:bg-emerald-800 rounded-[3rem] shadow-inner flex items-center justify-center overflow-hidden shrink-0 material-transition hover:scale-[1.03] hover:shadow-xl cursor-pointer">
                 <img src="[01] Photos/Priest, Alex - Headshot.jpg" alt="A. Alexander Priest Headshot" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23a7f3d0\'><rect width=\'100%\' height=\'100%\'/></svg>'">
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-10 md:p-14 shadow-sm material-transition hover:shadow-md scroll-mt-36">
+        <section id="about" class="about-card bg-white dark:bg-slate-800 rounded-[2.5rem] p-6 sm:p-10 md:p-14 material-transition scroll-mt-24 md:scroll-mt-36">
             <h2 class="text-3xl font-bold mb-6 text-slate-900 dark:text-white">About Me</h2>
-            <div class="text-lg text-slate-600 dark:text-slate-300 space-y-4 leading-relaxed">
+            <div class="text-lg text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed font-serif">
                 <p>
                     I am an Environmental Sociologist dedicated to empowering underrepresented communities through experiential, community-based research. Drawing on my background as a graduate of a rural community college, I strive to make sociological theory accessible and relevant to lived experiences. My work integrates environmental justice theory to illuminate how marginalized groups navigate recovery from environmental hazards and adapt to ongoing climate challenges.
                 </p>
@@ -146,175 +212,47 @@
         </section>
 
         <!-- Research Section with Filtering -->
-        <section id="research" class="space-y-8 scroll-mt-36">
+        <section id="research" class="space-y-8 scroll-mt-24 md:scroll-mt-36">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pl-4">
                 <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Featured Research</h2>
                 
                 <!-- Filter Chips -->
                 <div class="flex flex-wrap gap-2" id="filter-container">
-                    <button data-filter="all" onclick="filterResearch('all')" class="filter-btn px-4 py-2 bg-emerald-700 dark:bg-emerald-600 text-white rounded-full text-sm font-semibold material-transition shadow-sm">All</button>
-                    <button data-filter="published" onclick="filterResearch('published')" class="filter-btn px-4 py-2 bg-emerald-100 dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 rounded-full text-sm font-semibold material-transition hover:bg-emerald-200 dark:hover:bg-slate-700 shadow-sm">Published</button>
-                    <button data-filter="forthcoming" onclick="filterResearch('forthcoming')" class="filter-btn px-4 py-2 bg-emerald-100 dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 rounded-full text-sm font-semibold material-transition hover:bg-emerald-200 dark:hover:bg-slate-700 shadow-sm">Forthcoming</button>
-                    <button data-filter="in-progress" onclick="filterResearch('in-progress')" class="filter-btn px-4 py-2 bg-emerald-100 dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 rounded-full text-sm font-semibold material-transition hover:bg-emerald-200 dark:hover:bg-slate-700 shadow-sm">In Progress</button>
+                    <md-filter-chip label="All" selected onclick="filterResearch(event, 'all')"></md-filter-chip>
+                    <md-filter-chip label="Published" onclick="filterResearch(event, 'published')"></md-filter-chip>
+                    <md-filter-chip label="Forthcoming" onclick="filterResearch(event, 'forthcoming')"></md-filter-chip>
+                    <md-filter-chip label="In Progress" onclick="filterResearch(event, 'in-progress')"></md-filter-chip>
                 </div>
             </div>
             
             <!-- Scroll Indicator Prompt -->
-            <div class="flex justify-end pr-4 text-slate-500 dark:text-slate-400 text-sm font-medium items-center gap-2 -mb-2 pt-2 transition-opacity duration-500" id="scroll-prompt">
+            <div class="flex justify-end pr-4 text-slate-600 dark:text-slate-300 text-sm font-medium items-center gap-2 -mb-2 pt-2 transition-opacity duration-500" id="scroll-prompt">
                 <span>Scroll to explore</span>
-                <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                <md-icon class="animate-bounce-x" style="font-size: 16px;">arrow_forward</md-icon>
             </div>
             
             <!-- Research Carousel Wrapper for Buttons -->
             <div class="relative group/carousel">
                 
                 <!-- Left Scroll Button (Apple Glass & Material 3 Inspired) -->
-                <button id="scroll-left-btn" class="absolute left-2 md:-left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center bg-white/20 dark:bg-slate-800/30 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 shadow-[0_4px_24px_rgba(0,0,0,0.1)] text-slate-700 dark:text-slate-200 z-10 glass-btn-transition opacity-0 scale-75 pointer-events-none hover:bg-white/40 dark:hover:bg-slate-700/50 hover:scale-110 active:scale-95" aria-label="Scroll left">
+                <button id="scroll-left-btn" class="absolute left-2 md:-left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full hidden md:flex items-center justify-center bg-white/20 dark:bg-slate-800/30 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 shadow-[0_4px_24px_rgba(0,0,0,0.1)] text-slate-700 dark:text-slate-200 z-10 glass-btn-transition opacity-0 scale-75 pointer-events-none hover:bg-white/40 dark:hover:bg-slate-700/50 hover:scale-110 active:scale-95" aria-label="Scroll left">
                     <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
 
                 <!-- Horizontal Scroll Container -->
-                <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 pt-4 px-4 md:px-8 scroll-px-4 md:scroll-px-8 no-scrollbar items-stretch relative z-0 mask-edge-right transition-all duration-300" id="research-grid">
-                    
-                    <!-- Card 1: Forthcoming -->
-                    <div data-category="forthcoming" onclick="openProject(event, 'revolving-door')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                            <div class="w-full h-full bg-indigo-100/50 dark:bg-indigo-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                 <svg class="w-14 h-14 text-indigo-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2V15"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider rounded-full">Forthcoming • Summer 2026</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Managed Retreat</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">The Revolving Door of Risk: Climate Hazards, Risk Containment and the Hidden Social Dynamics of Managed Retreat</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Forthcoming in RSF: Russell Sage Foundation Journal of Social Sciences. Co-authored with James R. Elliott, Kevin Loughran, and Phylicia Lee Brown, this study investigates the social dynamics of managed retreat and the "revolving door" of climate risk.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">View Project Details &rarr;</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: In Progress - Blowin in the Wind -->
-                    <div data-category="in-progress" onclick="openProject(event, 'blowin-wind')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                            <div class="w-full h-full bg-cyan-100/50 dark:bg-cyan-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                 <svg class="w-14 h-14 text-cyan-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider rounded-full">In Progress</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Residential Instability</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Blowin' in the Wind: Disaggregating Patterns of Residential Relocation Following Four Major Hurricanes</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Prepared for the 2026 Population Association of America meeting. This solo-authored paper leverages restricted consumer reference data to track the address-to-address relocation of nearly four million households impacted by major hurricanes.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">View Project Details &rarr;</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: In Progress - Colorblind Retreat -->
-                    <div data-category="in-progress" onclick="openProject(event, 'race-relocation')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                            <div class="w-full h-full bg-orange-100/50 dark:bg-orange-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                 <svg class="w-14 h-14 text-orange-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider rounded-full">In Progress</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Qualitative Study</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">How People (Don't) Talk about Race in Climate Relocation</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Co-authored with Kevin Loughran, James R. Elliott, and others, this nationwide qualitative study investigates how government buyout programs intersect with racialized landscapes and ideologies of colorblindness.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">View Project Details &rarr;</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Published 2026 -->
-                    <div data-category="published" onclick="openProject(event, 'toxic-fear')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                             <div class="w-full h-full bg-rose-100/50 dark:bg-rose-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                  <svg class="w-14 h-14 text-rose-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                             </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2026</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Natech Disasters</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Toxic Fear: Climate, Contamination, and Worries about Future Flooding in Coastal Industrial Communities</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Natural Hazards Review. Co-authored with James R. Elliott, Phylicia Lee Brown, and Stephen J. Brown, this study investigates racial and ethnic disparities in reports of contamination during Hurricane Harvey and its influence on future flooding worries.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">Read the Article &rarr;</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 5: Published 2025 (Updated with onClick router) -->
-                    <div data-category="published" onclick="openProject(event, 'here-there')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                            <div class="w-full h-full bg-blue-100/50 dark:bg-blue-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                 <svg class="w-14 h-14 text-blue-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2025</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Climate Adaptation</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Here, There and Everywhere: Residential Relocation Following a Natural Disaster</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Spatial Demography. Using granular consumer reference data, this solo-authored paper examines how the severity of flooding interacts with climate apartheid to shape post-disaster residential relocation.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">Read the Article &rarr;</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 6: Published 2023 -->
-                    <div data-category="published" onclick="openProject(event, 'multiplicity-impact')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                             <div class="w-full h-full bg-emerald-100/50 dark:bg-emerald-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                 <svg class="w-14 h-14 text-emerald-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2023</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Environmental Justice</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">The Multiplicity of Impact: How Social Marginalization Compounds Climate Disasters</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Environmental Sociology. Co-authored with James R. Elliott, this article reveals how racial marginalization leads to a greater number and wider range of disaster impacts for households of color and their networks.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">Read the Article &rarr;</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 7: Published 2023 -->
-                    <div data-category="published" onclick="openProject(event, 'under-pressure')" class="research-card cursor-pointer shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] snap-start bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
-                        <div class="h-48 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
-                             <div class="w-full h-full bg-purple-100/50 dark:bg-purple-900/20 flex items-center justify-center material-transition group-hover:scale-105">
-                                 <svg class="w-14 h-14 text-purple-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-8 space-y-4 flex-1 flex flex-col">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2023</span>
-                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Social Capital</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Under Pressure: Social Capital and Trust in Government After Natural Disasters</h3>
-                            <p class="text-slate-600 dark:text-slate-400 line-clamp-3 flex-1">Published in Social Currents. This solo-authored article explores how an impact to households' close-tie networks acts as a form of collective trauma, significantly reducing trust in government after natural disasters.</p>
-                            <span class="inline-block mt-auto text-emerald-700 dark:text-emerald-400 font-semibold group-hover:underline">Read the Article &rarr;</span>
-                        </div>
-                    </div>
-
-                </div>
+                <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 pt-4 px-4 md:px-8 scroll-px-4 md:scroll-px-8 no-scrollbar items-stretch relative z-0 mask-edge-right transition-all duration-300" id="research-grid"></div>
 
                 <!-- Right Scroll Button (Apple Glass & Material 3 Inspired) -->
-                <button id="scroll-right-btn" class="absolute right-2 md:-right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center bg-white/20 dark:bg-slate-800/30 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 shadow-[0_4px_24px_rgba(0,0,0,0.1)] text-slate-700 dark:text-slate-200 z-10 glass-btn-transition opacity-0 scale-75 pointer-events-none hover:bg-white/40 dark:hover:bg-slate-700/50 hover:scale-110 active:scale-95" aria-label="Scroll right">
+                <button id="scroll-right-btn" class="absolute right-2 md:-right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full hidden md:flex items-center justify-center bg-white/20 dark:bg-slate-800/30 backdrop-blur-xl border border-white/40 dark:border-slate-600/30 shadow-[0_4px_24px_rgba(0,0,0,0.1)] text-slate-700 dark:text-slate-200 z-10 glass-btn-transition opacity-0 scale-75 pointer-events-none hover:bg-white/40 dark:hover:bg-slate-700/50 hover:scale-110 active:scale-95" aria-label="Scroll right">
                     <svg class="w-6 h-6 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                 </button>
             </div>
         </section>
 
         <!-- Teaching Section -->
-        <section id="teaching" class="space-y-8 scroll-mt-36">
+        <section id="teaching" class="space-y-8 scroll-mt-24 md:scroll-mt-36">
             <h2 class="text-3xl font-bold text-slate-900 dark:text-white pl-4">Teaching & Public Sociology</h2>
-            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-10 md:p-14 shadow-sm space-y-12 material-transition hover:shadow-md">
+            <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-6 sm:p-10 md:p-14 shadow-sm space-y-12 material-transition hover:shadow-md">
                 
                 <!-- For Students: Courses -->
                 <div>
@@ -322,42 +260,44 @@
                     <div class="grid md:grid-cols-2 gap-8">
                         
                         <!-- RSOC 450 (Unified Style) -->
-                        <div class="bg-[#f8faf9] dark:bg-slate-800/50 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="course-card bg-[#f8faf9] dark:bg-slate-800/50 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-700 material-transition group flex flex-col">
+                            <md-elevation></md-elevation>
                             <div class="h-40 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
                                 <div class="w-full h-full bg-teal-100/50 dark:bg-teal-900/20 flex items-center justify-center material-transition group-hover:scale-105">
                                     <svg class="w-14 h-14 text-teal-500 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
                             </div>
-                            <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="p-6 sm:p-8 space-y-4 flex-1 flex flex-col">
                                 <div class="flex flex-wrap gap-2">
                                     <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">RSOC 450 / 650</span>
                                 </div>
                                 <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Environmental Sociology</h3>
-                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed flex-1">This course explores the emergence of the 'environment' as a subject of social and political concern. Students engage with diverse theoretical approaches to build critical skills for analyzing contemporary environmental issues and assessing pathways toward sustainability and environmental justice.</p>
-                                <a href="#" class="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition group/link">
-                                    View Syllabus 
-                                    <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                </a>
+                                <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed flex-1 font-serif">This course explores the emergence of the 'environment' as a subject of social and political concern. Students engage with diverse theoretical approaches to build critical skills for analyzing contemporary environmental issues and assessing pathways toward sustainability and environmental justice.</p>
+                                <md-text-button href="#" class="mt-auto pt-4 self-start">
+                                    View Syllabus
+                                    <md-icon slot="icon">download</md-icon>
+                                </md-text-button>
                             </div>
                         </div>
                         
                         <!-- RSOC 375 (Unified Style) -->
-                        <div class="bg-[#f8faf9] dark:bg-slate-800/50 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl material-transition hover:-translate-y-1 group flex flex-col">
+                        <div class="course-card bg-[#f8faf9] dark:bg-slate-800/50 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-700 material-transition group flex flex-col">
+                            <md-elevation></md-elevation>
                             <div class="h-40 bg-stone-200 dark:bg-slate-700 flex items-center justify-center shrink-0 overflow-hidden">
                                 <div class="w-full h-full bg-sky-100/50 dark:bg-sky-900/20 flex items-center justify-center material-transition group-hover:scale-105">
                                     <svg class="w-14 h-14 text-sky-500 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                                 </div>
                             </div>
-                            <div class="p-8 space-y-4 flex-1 flex flex-col">
+                            <div class="p-6 sm:p-8 space-y-4 flex-1 flex flex-col">
                                 <div class="flex flex-wrap gap-2">
                                     <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">RSOC 375 / 675</span>
                                 </div>
                                 <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">Public Participation & Conflict Resolution</h3>
-                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed flex-1">A close examination of environmental conflicts and their social, cultural, and political dimensions. Through contemporary Canadian case studies, students learn to navigate the perspectives of diverse stakeholders and the ongoing debates surrounding sustainability, energy, and climate change.</p>
-                                <a href="#" class="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition group/link">
-                                    View Syllabus 
-                                    <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                </a>
+                                <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed flex-1 font-serif">A close examination of environmental conflicts and their social, cultural, and political dimensions. Through contemporary Canadian case studies, students learn to navigate the perspectives of diverse stakeholders and the ongoing debates surrounding sustainability, energy, and climate change.</p>
+                                <md-text-button href="#" class="mt-auto pt-4 self-start">
+                                    View Syllabus
+                                    <md-icon slot="icon">download</md-icon>
+                                </md-text-button>
                             </div>
                         </div>
 
@@ -368,13 +308,13 @@
                 <div class="border-t border-slate-200 dark:border-slate-700 pt-8 grid md:grid-cols-2 gap-10">
                     <div class="space-y-4">
                         <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Pedagogical Approach</h3>
-                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
                             My teaching strategy centers on bridging sociological theory with real-world application. Because my courses are cross-listed (combining undergraduate and 600-level graduate cohorts), I utilize a scaffolded approach to discussion and assignments. This allows advanced students to engage deeply with theoretical frameworks while ensuring foundational concepts remain accessible and relevant to all learners.
                         </p>
                     </div>
                     <div class="space-y-4">
                         <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Materials & Public Sociology</h3>
-                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
                             I strongly believe in taking sociology beyond the classroom walls. My instructional materials frequently incorporate contemporary Canadian case studies and structured service-learning alongside local environmental justice groups. This approach grounds theoretical concepts in lived realities and empowers students to co-produce knowledge that benefits underrepresented communities.
                         </p>
                     </div>
@@ -384,165 +324,173 @@
         </section>
 
         <!-- Connect / CV Section -->
-        <section id="cv" class="bg-emerald-900 dark:bg-emerald-950 text-emerald-50 rounded-[2.5rem] p-10 md:p-14 space-y-12 shadow-sm scroll-mt-36">
+        <section id="cv" class="bg-emerald-900 dark:bg-emerald-950 text-emerald-50 rounded-[2.5rem] p-6 sm:p-10 md:p-14 space-y-12 shadow-sm scroll-mt-24 md:scroll-mt-36">
             
             <div class="text-center space-y-6">
                 <h2 class="text-3xl font-bold">Let's Connect</h2>
-                <p class="max-w-xl mx-auto text-emerald-200 text-lg">
+                <p class="max-w-xl mx-auto text-emerald-200 text-lg font-serif">
                     Whether you are a student, a fellow researcher, or a community organizer, I'm always open to discussing relocation adaptation and environmental justice.
                 </p>
                 <div class="pt-2">
-                    <a href="#" class="inline-block px-8 py-4 bg-white text-emerald-900 rounded-full font-bold hover:bg-emerald-50 material-transition shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    <a href="#" class="inline-block relative overflow-hidden px-8 py-4 bg-white text-emerald-900 rounded-full font-bold hover:bg-emerald-50 material-transition shadow-lg hover:shadow-xl hover:-translate-y-1">
                         Download Full CV (PDF)
+                        <md-ripple></md-ripple>
+                        <md-focus-ring></md-focus-ring>
                     </a>
                 </div>
             </div>
 
             <!-- Material You Contact Form -->
-            <div class="max-w-2xl mx-auto bg-emerald-800/40 dark:bg-emerald-900/40 p-8 rounded-[2rem] border border-emerald-700/30 shadow-inner">
-                <form class="space-y-6" onsubmit="event.preventDefault(); alert('In a live environment, this would send an email to aapriest@ualberta.ca!');">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm font-semibold text-emerald-100 pl-4">Name</label>
-                            <input type="text" required class="w-full bg-emerald-950/40 text-white placeholder-emerald-400/50 rounded-full px-6 py-4 outline-none focus:ring-2 focus:ring-emerald-400 material-transition border border-transparent focus:border-emerald-400" placeholder="Jane Doe">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-semibold text-emerald-100 pl-4">Email</label>
-                            <input type="email" required class="w-full bg-emerald-950/40 text-white placeholder-emerald-400/50 rounded-full px-6 py-4 outline-none focus:ring-2 focus:ring-emerald-400 material-transition border border-transparent focus:border-emerald-400" placeholder="jane@example.com">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-sm font-semibold text-emerald-100 pl-4">Message</label>
-                        <textarea rows="4" required class="w-full bg-emerald-950/40 text-white placeholder-emerald-400/50 rounded-[2rem] px-6 py-4 outline-none focus:ring-2 focus:ring-emerald-400 material-transition border border-transparent focus:border-emerald-400 resize-none" placeholder="What would you like to discuss?"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-emerald-500 text-emerald-950 font-bold rounded-full px-6 py-4 hover:bg-emerald-400 material-transition shadow-lg hover:-translate-y-1">
+            <div class="contact-card max-w-xl mx-auto bg-emerald-800/40 dark:bg-emerald-900/40 p-6 sm:p-10 rounded-[2rem] border border-emerald-700/30">
+                <form class="max-w-md mx-auto space-y-5" onsubmit="event.preventDefault(); handleFormSubmit();">
+                    <md-outlined-text-field id="form-name" label="Name" required placeholder="Jane Doe" class="block w-full"></md-outlined-text-field>
+                    <md-outlined-text-field id="form-email" type="email" label="Email" required placeholder="jane@example.com" class="block w-full"></md-outlined-text-field>
+                    <md-outlined-text-field id="form-message" type="textarea" rows="4" label="Message" required placeholder="What would you like to discuss?" class="block w-full" style="--md-outlined-text-field-container-shape: 24px;"></md-outlined-text-field>
+                    <md-filled-button type="submit" class="w-full py-1 text-base">
                         Send Message
-                    </button>
+                    </md-filled-button>
                 </form>
             </div>
 
         </section>
 
         <!-- Academic Footer -->
-        <footer class="pb-24 md:pb-12 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-500 dark:text-slate-400">
+        <footer class="pb-24 md:pb-12 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-700 dark:text-slate-300">
             <p class="text-sm">© 2026 A. Alexander Priest. All rights reserved.</p>
             
             <div class="flex items-center gap-6">
                 <!-- Google Scholar -->
-                <a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 material-transition" title="Google Scholar">
+                <a href="#" class="relative hover:text-emerald-700 dark:hover:text-emerald-300 material-transition focus:outline-none" title="Google Scholar">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
+                    <md-focus-ring></md-focus-ring>
                 </a>
                 <!-- LinkedIn -->
-                <a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 material-transition" title="LinkedIn">
+                <a href="#" class="relative hover:text-emerald-700 dark:hover:text-emerald-300 material-transition focus:outline-none" title="LinkedIn">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <md-focus-ring></md-focus-ring>
                 </a>
                 <!-- ResearchGate (Custom Path approximation) -->
-                <a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 material-transition" title="ResearchGate">
+                <a href="#" class="relative hover:text-emerald-700 dark:hover:text-emerald-300 material-transition focus:outline-none" title="ResearchGate">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.586 0c-.818 0-1.508.19-2.073.565-.563.377-.97.936-1.213 1.68a3.193 3.193 0 0 0-.112.437 8.365 8.365 0 0 0-.078.53 16.35 16.35 0 0 0-.05.727c-.014.282-.023.612-.026 1.006-.003.39-.006.845-.006 1.365 0 .805.013 1.52.04 2.146.024.625.074 1.173.146 1.638.074.467.18.868.318 1.205.137.334.336.608.59.818.256.213.593.364.996.452.404.09.91.137 1.51.137.6 0 1.107-.046 1.51-.137.405-.088.742-.24.997-.452.254-.21.453-.484.59-.818.136-.337.243-.738.318-1.205.072-.465.122-1.013.146-1.638.025-.626.04-1.34.04-2.146 0-.52-.003-.975-.008-1.365a25.2 25.2 0 0 0-.026-1.006 16.5 16.5 0 0 0-.05-.727 8.36 8.36 0 0 0-.077-.53 3.19 3.19 0 0 0-.112-.437c-.242-.744-.65-1.303-1.21-1.68-.567-.376-1.258-.565-2.076-.565zM7.124 0c-.98 0-1.743.204-2.285.61-.54.406-.81 1.004-.81 1.794 0 .428.083.82.25 1.18.167.36.43.68.79 1.026.358.343.83.655 1.41.936.58.28 1.29.544 2.13.792.836.248 1.565.488 2.185.72.617.234 1.133.498 1.543.79.41.293.723.645.933 1.055.21-.41-.316-.918-.316-1.524 0-1.018.345-1.83 1.034-2.434C.893 1.648 1.892 1.21 3.202.938 4.51.667 6.11.53 7.99.53h4.633V3.76H7.125V0zM22.518 12.016l-3.324 8.756h-2.93l-3.324-8.756h3.11l1.678 5.253 1.678-5.253h3.112z"/></svg>
+                    <md-focus-ring></md-focus-ring>
                 </a>
             </div>
         </footer>
 
     </main>
 
-    <!-- Project Detail View (Material 3 Surface, Hidden by default) -->
-    <article id="project-view" class="hidden max-w-4xl mx-auto mt-2 md:mt-6 space-y-4 transition-all duration-500 ease-[cubic-bezier(0.2,0,0,1)] transform opacity-0 translate-y-12 scale-95 origin-top pb-24 px-4 md:px-0">
-        
-        <!-- Top Navigation Action -->
-        <div class="flex items-center justify-between pl-2">
-            <button onclick="closeProject()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 rounded-full font-semibold hover:bg-emerald-50 dark:hover:bg-slate-700 material-transition shadow-sm">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-                Back to Research
-            </button>
-        </div>
-
-        <!-- Main Content Surface -->
-        <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 md:p-14 shadow-sm border border-slate-100 dark:border-slate-700/50">
-            
-            <!-- Header -->
-            <div class="space-y-6 border-b border-slate-100 dark:border-slate-700 pb-8">
-                <div class="flex flex-wrap gap-2">
-                    <span id="project-badge-category" class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2025</span>
-                    <span id="project-badge-topic" class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Climate Adaptation</span>
-                </div>
-                <h1 id="project-detail-title" class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
-                    Here, There and Everywhere: Residential Relocation Following a Natural Disaster
-                </h1>
-                <div class="flex items-center gap-4 text-slate-600 dark:text-slate-400">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        <span id="project-detail-authors" class="font-medium">A. Alexander Priest</span>
-                    </div>
-                    <span class="text-slate-300 dark:text-slate-600">•</span>
-                    <span id="project-detail-venue" class="font-medium italic">Spatial Demography</span>
-                </div>
+    <!-- Project Detail View (Material 3 Dialog) -->
+    <md-dialog id="project-view">
+        <div slot="headline" class="space-y-4 border-b border-slate-100 dark:border-slate-700 pb-4">
+            <div class="flex flex-wrap gap-2">
+                <span id="project-badge-category" class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider rounded-full">Published • 2025</span>
+                <span id="project-badge-topic" class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold uppercase tracking-wider rounded-full">Climate Adaptation</span>
             </div>
-
+            <h2 id="project-detail-title" class="text-xl md:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                Here, There and Everywhere: Residential Relocation Following a Natural Disaster
+            </h2>
+        </div>
+        
+        <div slot="content" class="space-y-6">
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-700 pb-4">
+                <div class="flex items-center gap-2">
+                    <md-icon style="font-size: 20px;">person</md-icon>
+                    <span id="project-detail-authors" class="font-medium">A. Alexander Priest</span>
+                </div>
+                <span class="text-slate-300 dark:text-slate-600">•</span>
+                <span id="project-detail-venue" class="font-medium italic">Spatial Demography</span>
+                <span class="text-slate-300 dark:text-slate-600 hidden md:inline" id="project-detail-affiliation-dot">•</span>
+                <span id="project-detail-affiliation" class="font-medium">University of Alberta</span>
+            </div>
+            
             <!-- Layout Grid for Content -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 pt-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4">
                 
                 <!-- Left Column: Abstract -->
                 <div class="lg:col-span-2 space-y-6">
-                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Abstract</h2>
-                    <div id="project-detail-abstract" class="space-y-4">
-                        <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Abstract</h3>
+                    <div id="project-detail-abstract" class="space-y-4 font-serif text-slate-700 dark:text-slate-300">
+                        <p class="leading-relaxed">
                             As climate-driven hazards increase in frequency and severity, residential relocation is increasingly viewed as a primary mechanism for climate adaptation. However, not all relocations are equal. Using highly granular consumer reference data, this study examines the spatial and demographic patterns of post-disaster mobility. By tracking address-to-address changes of affected households, the research reveals how the severity of localized flooding interacts with existing socio-economic inequalities to fundamentally shape <em>who</em> gets to move, and <em>where</em> they end up. 
                         </p>
-                        <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                        <p class="leading-relaxed">
                             Findings indicate that while affluent households leverage mobility to significantly reduce their future risk exposure, historically marginalized communities frequently face "lateral" or "downward" mobility, relocating to neighborhoods with similar or even compounding environmental and economic vulnerabilities.
                         </p>
                     </div>
                 </div>
 
                 <!-- Right Column: Meta & Links -->
-                <div class="space-y-8">
+                <div class="space-y-6">
                     
                     <!-- Publisher / Link Action -->
-                    <div id="project-detail-pub-block" class="bg-slate-50 dark:bg-slate-900/50 rounded-[1.5rem] p-6 space-y-4">
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Publication</h3>
-                        <p id="project-detail-pub-status" class="text-sm text-slate-600 dark:text-slate-400">Available to read via Springer Link.</p>
-                        <a id="project-detail-doi-link" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-full material-transition shadow-sm hover:shadow-md hover:-translate-y-0.5 no-underline">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <div id="project-detail-pub-block" class="bg-slate-50 dark:bg-slate-900/50 rounded-[1.5rem] p-5 space-y-4 border border-slate-100 dark:border-slate-800">
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Publication</h4>
+                        <p id="project-detail-pub-status" class="text-xs text-slate-700 dark:text-slate-300">Available to read via Springer Link.</p>
+                        <md-filled-button id="project-detail-doi-link" href="#" target="_blank" class="w-full">
                             Read via DOI
-                        </a>
+                            <md-icon slot="icon">open_in_new</md-icon>
+                        </md-filled-button>
                     </div>
 
                     <!-- Media Mentions -->
                     <div id="project-detail-media-block" class="space-y-4">
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">In the Media</h3>
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">In the Media</h4>
                         <div id="project-detail-media-links" class="space-y-2">
                             <!-- Mention 1 -->
-                            <a href="#" class="group flex items-start gap-3 p-3 -mx-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 material-transition font-normal no-underline">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 flex items-center justify-center shrink-0">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                            <a href="#" class="group flex items-start gap-3 p-3 -mx-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 material-transition font-normal no-underline relative focus:outline-none">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                                    <md-icon>newspaper</md-icon>
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-slate-900 dark:text-slate-200 group-hover:text-emerald-700 transition">The New York Times</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">"Who actually gets to escape the flood zone?"</p>
+                                    <p class="text-xs text-slate-700 dark:text-slate-300 mt-0.5">"Who actually gets to escape the flood zone?"</p>
                                 </div>
+                                <md-focus-ring></md-focus-ring>
                             </a>
                             <!-- Mention 2 -->
-                            <a href="#" class="group flex items-start gap-3 p-3 -mx-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 material-transition font-normal no-underline">
+                            <a href="#" class="group flex items-start gap-3 p-3 -mx-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 material-transition font-normal no-underline relative focus:outline-none">
                                 <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                                    <md-icon>newspaper</md-icon>
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-slate-900 dark:text-slate-200 group-hover:text-emerald-700 transition">Grist</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">"The hidden inequality of climate retreat."</p>
+                                    <p class="text-xs text-slate-700 dark:text-slate-300 mt-0.5">"The hidden inequality of climate retreat."</p>
                                 </div>
+                                <md-focus-ring></md-focus-ring>
                             </a>
                         </div>
+                    </div>
+                    
+                    <!-- Keywords -->
+                    <div id="project-detail-keywords-block" class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Keywords</h4>
+                        <div id="project-detail-keywords" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Contact/Email Info -->
+                    <div id="project-detail-contact-block" class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Contact Author</h4>
+                        <a id="project-detail-email-link" href="mailto:aapriest@ualberta.ca" class="inline-flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400 hover:underline focus:outline-none relative">
+                            <md-icon style="font-size: 16px;">mail</md-icon>
+                            <span id="project-detail-email">aapriest@ualberta.ca</span>
+                            <md-focus-ring></md-focus-ring>
+                        </a>
                     </div>
                     
                 </div>
             </div>
         </div>
-    </article>
+        
+        <div slot="actions">
+            <md-text-button onclick="closeProject()">Close</md-text-button>
+        </div>
+    </md-dialog>
 
     <!-- Scroll Fog Indicator (Project View Only) -->
     <div id="scroll-fog" class="fixed bottom-0 left-0 right-0 h-32 md:h-48 bg-gradient-to-t from-[#f0f4f1] dark:from-slate-900 to-transparent z-30 opacity-0 transition-opacity duration-500 pointer-events-none hidden"></div>
 
     <!-- Interactive Scripts -->
+    <script src="projects-data.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

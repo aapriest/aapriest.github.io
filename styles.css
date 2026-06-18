@@ -1,7 +1,7 @@
 /* Material 3 "Sunset" Smooth Color Transitions */
 *, *::before, *::after {
     transition-property: background-color, border-color, color, fill, stroke;
-    transition-duration: 600ms;
+    transition-duration: 300ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -10,12 +10,17 @@ html { scroll-behavior: smooth; }
 
 /* Material You fluid transition utilities */
 .material-transition {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Specialized Material 3 / Glass transition for the buttons */
 .glass-btn-transition {
     transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Active Sliding Nav Indicator (Desktop) */
+.nav-indicator {
+    transition: all 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Material 3 Edge Fade Masks */
@@ -89,4 +94,188 @@ html.dark .theme-toggle-ray {
 }
 .animate-bounce-x {
     animation: bounce-x 2s ease-in-out infinite;
+}
+
+/* Active Sliding Nav Indicator (Mobile) */
+.mobile-nav-indicator {
+    transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --- Material 3 Design Tokens (Forest/Sunset Green Palette) --- */
+:root {
+  --md-sys-color-primary: #065f46; /* emerald-800 */
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #a7f3d0; /* emerald-200 */
+  --md-sys-color-on-primary-container: #042f1a;
+  --md-sys-color-surface: #f0f4f1; /* body bg light */
+  --md-sys-color-on-surface: #1e293b; /* slate-800 */
+  --md-sys-color-surface-container: #ffffff;
+  --md-sys-color-surface-container-low: #f8faf9;
+  --md-sys-color-on-surface-variant: #475569; /* slate-600 */
+  --md-sys-color-outline: #94a3b8; /* slate-400 */
+  --md-sys-color-secondary: #0f766e; /* teal-700 */
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #ccfbf1;
+  --md-sys-color-on-secondary-container: #115e59;
+}
+
+html.dark {
+  --md-sys-color-primary: #34d399; /* emerald-400 */
+  --md-sys-color-on-primary: #022c22;
+  --md-sys-color-primary-container: #065f46; /* emerald-800 */
+  --md-sys-color-on-primary-container: #a7f3d0;
+  --md-sys-color-surface: #0f172a; /* slate-900 */
+  --md-sys-color-on-surface: #e2e8f0; /* slate-200 */
+  --md-sys-color-surface-container: #1e293b; /* slate-800 */
+  --md-sys-color-surface-container-low: #182235;
+  --md-sys-color-on-surface-variant: #cbd5e1; /* slate-300 */
+  --md-sys-color-outline: #64748b; /* slate-500 */
+  --md-sys-color-secondary: #2dd4bf; /* teal-400 */
+  --md-sys-color-on-secondary: #00332c;
+  --md-sys-color-secondary-container: #0f766e;
+  --md-sys-color-on-secondary-container: #ccfbf1;
+}
+
+/* Custom Web Component Style Overrides to Consume Theme Variables */
+md-filled-button {
+  --md-filled-button-container-color: var(--md-sys-color-primary);
+  --md-filled-button-label-text-color: var(--md-sys-color-on-primary);
+  --md-filled-button-hover-state-layer-color: var(--md-sys-color-on-primary);
+  --md-filled-button-focus-state-layer-color: var(--md-sys-color-on-primary);
+  --md-filled-button-pressed-state-layer-color: var(--md-sys-color-on-primary);
+  --md-filled-button-container-shape: 9999px;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+md-outlined-button {
+  --md-outlined-button-outline-color: var(--md-sys-color-primary);
+  --md-outlined-button-label-text-color: var(--md-sys-color-primary);
+  --md-outlined-button-container-shape: 9999px;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+md-text-button {
+  --md-text-button-label-text-color: var(--md-sys-color-primary);
+  --md-text-button-state-layer-color: var(--md-sys-color-primary);
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+md-outlined-text-field {
+  --md-outlined-text-field-outline-color: var(--md-sys-color-outline);
+  --md-outlined-text-field-focus-outline-color: var(--md-sys-color-primary);
+  --md-outlined-text-field-label-text-color: var(--md-sys-color-on-surface-variant);
+  --md-outlined-text-field-focus-label-text-color: var(--md-sys-color-primary);
+  --md-outlined-text-field-input-text-color: var(--md-sys-color-on-surface);
+  --md-outlined-text-field-focus-input-text-color: var(--md-sys-color-on-surface);
+  --md-outlined-text-field-caret-color: var(--md-sys-color-primary);
+  --md-outlined-text-field-container-shape: 28px;
+  --md-outlined-text-field-input-text-font: 'Lora', Georgia, serif;
+  --md-outlined-text-field-label-text-font: 'Montserrat', system-ui, sans-serif;
+}
+
+md-filter-chip {
+  --md-filter-chip-selected-container-color: var(--md-sys-color-primary-container);
+  --md-filter-chip-selected-label-text-color: var(--md-sys-color-on-primary-container);
+  --md-filter-chip-label-text-color: var(--md-sys-color-on-surface);
+  --md-filter-chip-outline-color: var(--md-sys-color-outline);
+  --md-filter-chip-container-shape: 9999px;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+md-assist-chip {
+  --md-assist-chip-label-text-color: var(--md-sys-color-on-surface);
+  --md-assist-chip-outline-color: var(--md-sys-color-outline);
+  --md-assist-chip-container-shape: 9999px;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+/* Contact Section Form Inputs Contrast Overrides (Always Light-on-Dark Contrast) */
+#cv md-outlined-text-field {
+  /* Outlined text field tokens */
+  --md-outlined-text-field-outline-color: rgba(255, 255, 255, 0.4);
+  --md-outlined-text-field-hover-outline-color: rgba(255, 255, 255, 0.8);
+  --md-outlined-text-field-focus-outline-color: #34d399; /* emerald-400 */
+  --md-outlined-text-field-label-text-color: #a7f3d0; /* emerald-200 */
+  --md-outlined-text-field-hover-label-text-color: #ffffff;
+  --md-outlined-text-field-focus-label-text-color: #34d399; /* emerald-400 */
+  --md-outlined-text-field-input-text-color: #ffffff;
+  --md-outlined-text-field-focus-input-text-color: #ffffff;
+  --md-outlined-text-field-input-text-placeholder-color: rgba(255, 255, 255, 0.6);
+  --md-outlined-text-field-caret-color: #34d399;
+
+  /* Outlined field tokens (fallback/internals for older/newer spec versions) */
+  --md-outlined-field-outline-color: rgba(255, 255, 255, 0.4);
+  --md-outlined-field-hover-outline-color: rgba(255, 255, 255, 0.8);
+  --md-outlined-field-focus-outline-color: #34d399;
+  --md-outlined-field-label-text-color: #a7f3d0;
+  --md-outlined-field-hover-label-text-color: #ffffff;
+  --md-outlined-field-focus-label-text-color: #34d399;
+  --md-outlined-field-input-text-color: #ffffff;
+  --md-outlined-field-focus-input-text-color: #ffffff;
+  --md-outlined-field-input-text-placeholder-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Force placeholder colors and override default user-agent styles */
+#cv md-outlined-text-field::part(input)::placeholder,
+#cv md-outlined-text-field::part(textarea)::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1 !important;
+}
+
+#cv md-filled-button {
+  --md-filled-button-container-color: #34d399; /* emerald-400 */
+  --md-filled-button-label-text-color: #022c22; /* dark green text */
+  --md-filled-button-hover-state-layer-color: #022c22;
+  --md-filled-button-focus-state-layer-color: #022c22;
+  --md-filled-button-pressed-state-layer-color: #022c22;
+}
+
+/* --- Material 3 Icon Font Setup --- */
+md-icon {
+  --md-icon-font: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* --- Material 3 Elevation & Depth Transitions --- */
+.course-card, .research-card {
+  position: relative;
+  --md-elevation-level: 1;
+  transition: --md-elevation-level 280ms cubic-bezier(0.2, 0, 0, 1), transform 280ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Rest dialog backdrops, headers resting flat */
+header.fixed, nav.fixed {
+  --md-elevation-level: 1;
+}
+
+.research-card:hover, .research-card:focus-within,
+.course-card:hover, .course-card:focus-within {
+  --md-elevation-level: 3;
+  transform: translateY(-4px);
+}
+
+.research-card:active, .course-card:active {
+  --md-elevation-level: 1;
+  transform: translateY(-1px);
+}
+
+/* --- Material 3 Dialog Component Styling Overrides --- */
+md-dialog {
+  max-width: 800px;
+  width: 90vw;
+  max-height: 85vh;
+  --md-dialog-container-shape: 28px;
+  --md-dialog-headline-color: var(--md-sys-color-on-surface);
+  --md-dialog-container-color: var(--md-sys-color-surface-container);
+  font-family: 'Montserrat', system-ui, sans-serif;
+}
+
+md-dialog [slot="content"] {
+  padding-top: 8px;
+  padding-bottom: 24px;
 }
